@@ -1,5 +1,5 @@
 variable "count" {
-  default = 1
+  default = 2
 }
 
 variable "tfe_organization" {
