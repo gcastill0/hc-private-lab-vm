@@ -32,7 +32,7 @@ resource "azurerm_network_interface" "main" {
 
 resource "azurerm_virtual_machine" "main" {
   count                 = 1
-  name                  = "VM-${count.index}-${data.terraform_remote_state.azure_master.postfix}"
+  name                  = "VM-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
   location              = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name   = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
   network_interface_ids = ["${azurerm_network_interface.main.id}"]
@@ -52,7 +52,7 @@ resource "azurerm_virtual_machine" "main" {
     version   = "latest"
   }
   storage_os_disk {
-    name              = "DISK-VM-${data.terraform_remote_state.azure_master.postfix}"
+    name              = "DISK-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
