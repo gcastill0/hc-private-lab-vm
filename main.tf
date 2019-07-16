@@ -7,7 +7,7 @@ variable "tfe_organization" {
 }
 
 variable "tfe_workspace" {
-  default = "azure-legacy"
+  default = "azure-environment"
 }
 
 data "terraform_remote_state" "azure_master" {
