@@ -36,7 +36,7 @@ resource "azurerm_virtual_machine" "main" {
   name                  = "VM-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
   location              = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name   = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
-  network_interface_ids = ["${azurerm_network_interface.main.id}"]
+  network_interface_ids = ["${azurerm_network_interface.main.id[count.index]}"]
   vm_size               = "Standard_DS1_v2"
 
   # Uncomment this line to delete the OS disk automatically when deleting the VM
