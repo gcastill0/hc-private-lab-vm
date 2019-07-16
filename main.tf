@@ -1,4 +1,3 @@
-
 variable "prefix" {
   default = "webserver"
 }
@@ -13,9 +12,11 @@ variable "tfe_workspace" {
 
 data "terraform_remote_state" "azure_master" {
   backend = "atlas"
+
   config {
     name = "${var.tfe_organization}/${var.tfe_workspace}"
   }
+}
 
 resource "azurerm_network_interface" "main" {
   name                = "${var.prefix}-nic"
@@ -31,8 +32,8 @@ resource "azurerm_network_interface" "main" {
 
 resource "azurerm_virtual_machine" "main" {
   name                  = "${var.prefix}-vm"
-  location            = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
-  resource_group_name = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
+  location              = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
+  resource_group_name   = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
   network_interface_ids = ["${azurerm_network_interface.main.id}"]
   vm_size               = "Standard_DS1_v2"
 
