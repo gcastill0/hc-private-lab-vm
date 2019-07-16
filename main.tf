@@ -25,7 +25,7 @@ resource "azurerm_network_interface" "main" {
 
   ip_configuration {
     name                          = "testconfiguration1"
-    subnet_id                     = "${azurerm_subnet.internal.id}"
+    subnet_id                     = "${data.terraform_remote_state.azure_master.azurerm_subnet_internal_id}"
     private_ip_address_allocation = "Dynamic"
   }
 }
