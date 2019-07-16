@@ -19,7 +19,8 @@ data "terraform_remote_state" "azure_master" {
 }
 
 resource "azurerm_network_interface" "main" {
-  name                = "NIC-${var.count}-${data.terraform_remote_state.azure_master.postfix}"
+  count               = "${var.count}"
+  name                = "NIC-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
   location            = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
 
