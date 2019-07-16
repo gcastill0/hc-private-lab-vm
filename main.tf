@@ -32,12 +32,12 @@ resource "azurerm_network_interface" "main" {
 }
 
 resource "azurerm_virtual_machine" "main" {
-  count                        = "${var.count}"
-  name                         = "VM-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
-  location                     = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
-  resource_group_name          = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
-  primary_network_interface_id = "${ element ( azurerm_network_interface.main.*.id,count.index) }"
-  vm_size                      = "Standard_DS1_v2"
+  count                 = "${var.count}"
+  name                  = "VM-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
+  location              = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
+  resource_group_name   = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
+  network_interface_ids = ["${ element ( azurerm_network_interface.main.*.id,count.index) }"]
+  vm_size               = "Standard_DS1_v2"
 
   # Uncomment this line to delete the OS disk automatically when deleting the VM
   delete_os_disk_on_termination = true
