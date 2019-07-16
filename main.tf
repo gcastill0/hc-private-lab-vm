@@ -1,5 +1,5 @@
-variable "prefix" {
-  default = "webserver"
+variable "count" {
+  default = 1
 }
 
 variable "tfe_organization" {
@@ -19,7 +19,7 @@ data "terraform_remote_state" "azure_master" {
 }
 
 resource "azurerm_network_interface" "main" {
-  name                = "${var.prefix}-nic"
+  name                = "NIC-${var.count}-${data.terraform_remote_state.azure_master.postfix}"
   location            = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
 
@@ -31,7 +31,7 @@ resource "azurerm_network_interface" "main" {
 }
 
 resource "azurerm_virtual_machine" "main" {
-  count                 = 1
+  count                 = "${var.count}"
   name                  = "VM-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
   location              = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name   = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
