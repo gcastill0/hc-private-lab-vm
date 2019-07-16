@@ -65,9 +65,12 @@ resource "azurerm_virtual_machine" "main" {
     admin_username = "testadmin"
     admin_password = "Password1234!"
   }
-  os_profile_linux_config {
-    disable_password_authentication = false
+  os_profile_windows_config {
+    provision_vm_agent = true
   }
+  # os_profile_linux_config {
+  #   disable_password_authentication = false
+  # }
   tags = {
     environment = "Staging"
   }
