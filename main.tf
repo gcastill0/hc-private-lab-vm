@@ -31,7 +31,7 @@ resource "azurerm_network_interface" "main" {
 }
 
 resource "azurerm_virtual_machine" "main" {
-  name                  = "${var.prefix}-vm"
+  name                  = "VM-${data.terraform_remote_state.azure_master.postfix}"
   location              = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name   = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
   network_interface_ids = ["${azurerm_network_interface.main.id}"]
@@ -51,7 +51,7 @@ resource "azurerm_virtual_machine" "main" {
     version   = "latest"
   }
   storage_os_disk {
-    name              = "myosdisk1"
+    name              = "DISK-VM-${data.terraform_remote_state.azure_master.postfix}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
@@ -65,6 +65,6 @@ resource "azurerm_virtual_machine" "main" {
     disable_password_authentication = false
   }
   tags = {
-    environment = "staging"
+    environment = "Staging"
   }
 }
