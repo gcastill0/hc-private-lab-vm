@@ -1,5 +1,5 @@
 variable "count" {
-  default = 0
+  default = 1
 }
 
 variable "tfe_organization" {
@@ -41,30 +41,33 @@ resource "azurerm_virtual_machine" "main" {
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
 
+  # storage_image_reference {
+  #   publisher = "Canonical"
+  #   offer     = "UbuntuServer"
+  #   sku       = "16.04-LTS"
+  #   version   = "latest"
+  # }
+
   storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2012-R2-Datacenter"
     version   = "latest"
   }
-
   storage_os_disk {
     name              = "DISK-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
-
   os_profile {
     computer_name  = "VM-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
     admin_username = "testadmin"
     admin_password = "Password1234!"
   }
-
   os_profile_linux_config {
     disable_password_authentication = false
   }
-
   tags = {
     environment = "Staging"
   }
