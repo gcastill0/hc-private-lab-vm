@@ -1,5 +1,9 @@
-variable "count" {
-  default = 2
+variable "win_count" {
+  default = 1
+}
+
+variable "linux_count" {
+  default = 1
 }
 
 variable "tfe_organization" {
