@@ -8,6 +8,7 @@ resource "azurerm_network_interface" "linux" {
     name                          = "testconfiguration1"
     subnet_id                     = "${data.terraform_remote_state.azure_master.azurerm_subnet_internal_id}"
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = "${azurerm_public_ip.linux.id}"
   }
 
   tags = "${var.tags}"
