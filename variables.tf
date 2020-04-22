@@ -1,5 +1,5 @@
 variable "win_count" {
-  default = 1
+  default = 0
 }
 
 variable "linux_count" {
