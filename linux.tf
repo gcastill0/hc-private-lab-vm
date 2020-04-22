@@ -1,6 +1,6 @@
 resource "azurerm_network_interface" "linux" {
   count               = "${var.linux_count}"
-  name                = "NIC-LNX-PRIVATE-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
+  name                = "NIC-PRIVATE-LNX-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
   location            = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
 
@@ -16,7 +16,7 @@ resource "azurerm_network_interface" "linux" {
 
 resource "azurerm_public_ip" "linux" {
   count               = "${var.linux_count}"
-  name                = "NIC-LNX-PUBLIC-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
+  name                = "NIC-PUBLIC-LNX-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
   location            = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
   allocation_method   = "Static"

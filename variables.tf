@@ -3,7 +3,7 @@ variable "win_count" {
 }
 
 variable "linux_count" {
-  default = 1
+  default = 0
 }
 
 variable "tfe_organization" {
