@@ -16,7 +16,7 @@ resource "azurerm_virtual_machine" "linux" {
   name                             = "LNX-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
   location                         = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name              = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
-  network_interface_ids            = ["${ element ( azurerm_network_interface.linux.*.id,count.index) }"]
+  network_interface_ids            = ["${element(azurerm_network_interface.linux.*.id, count.index)}"]
   vm_size                          = "Standard_DS1_v2"
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
@@ -37,12 +37,16 @@ resource "azurerm_virtual_machine" "linux" {
 
   os_profile {
     computer_name  = "LNX-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
-    admin_username = "testadmin"
-    admin_password = "Password1234!"
+    admin_username = "hcadmin"
   }
 
   os_profile_linux_config {
-    disable_password_authentication = false
+    disable_password_authentication = true
+
+    ssh_keys {
+      path     = "/home/hcadmin/.ssh/authorized_keys"
+      key_data = "${var.hcadmin_rsa}"
+    }
   }
 
   tags = {
