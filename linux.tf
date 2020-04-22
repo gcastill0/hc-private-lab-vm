@@ -45,7 +45,7 @@ resource "azurerm_virtual_machine" "linux" {
 
     ssh_keys {
       path     = "/home/hcadmin/.ssh/authorized_keys"
-      key_data = "${data.terraform_remote_state.azure_master.hcadmin_rsa}"
+      key_data = "${data.terraform_remote_state.azure_master.azure_vm_ssh-rsa}"
 
     }
   }
