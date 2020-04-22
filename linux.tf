@@ -1,6 +1,6 @@
 resource "azurerm_network_interface" "linux" {
   count               = "${var.linux_count}"
-  name                = "NIC-LNX-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
+  name                = "NIC-LNX-PRIVATE-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
   location            = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
   resource_group_name = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
 
@@ -9,6 +9,17 @@ resource "azurerm_network_interface" "linux" {
     subnet_id                     = "${data.terraform_remote_state.azure_master.azurerm_subnet_internal_id}"
     private_ip_address_allocation = "Dynamic"
   }
+
+  tags = "${var.tags}"
+}
+
+resource "azurerm_public_ip" "linux" {
+  count               = "${var.linux_count}"
+  name                = "NIC-LNX-PUBLIC-${count.index + 1}-${data.terraform_remote_state.azure_master.postfix}"
+  location            = "${data.terraform_remote_state.azure_master.azure_resource_group_location}"
+  resource_group_name = "${data.terraform_remote_state.azure_master.azure_resource_group_name}"
+  allocation_method   = "Static"
+  tags                = "${var.tags}"
 }
 
 resource "azurerm_virtual_machine" "linux" {
@@ -46,11 +57,8 @@ resource "azurerm_virtual_machine" "linux" {
     ssh_keys {
       path     = "/home/hcadmin/.ssh/authorized_keys"
       key_data = "${data.terraform_remote_state.azure_master.azure_vm_ssh-rsa}"
-
     }
   }
 
-  tags = {
-    environment = "Staging"
-  }
+  tags = "${var.tags}"
 }
